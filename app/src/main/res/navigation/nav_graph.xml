@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_graph"
+    app:startDestination="@id/loginFragmentChoose">
+
+    <activity
+        android:id="@+id/loginActivity"
+        android:name="com.example.cinemabdapp.LoginActivity"
+        android:label="LoginActivity" />
+    <fragment
+        android:id="@+id/loginFragmentChoose"
+        android:name="com.example.cinemabdapp.LoginFragmentChoose"
+        android:label="LoginFragmentChoose" >
+        <action
+            android:id="@+id/action_loginFragmentChoose_to_userFragmentLogin"
+            app:destination="@id/userFragmentLogin" />
+        <action
+            android:id="@+id/action_loginFragmentChoose_to_adminFragmentLogin"
+            app:destination="@id/adminFragmentLogin" />
+    </fragment>
+    <fragment
+        android:id="@+id/userFragmentFilms"
+        android:name="com.example.cinemabdapp.user.UserFragmentFilms"
+        android:label="UserFragmentFilms" >
+        <action
+            android:id="@+id/action_userFragmentFilms_to_userFragmentFilm"
+            app:destination="@id/userFragmentFilm" />
+    </fragment>
+    <fragment
+        android:id="@+id/userFragmentFilm"
+        android:name="com.example.cinemabdapp.user.UserFragmentFilm"
+        android:label="UserFragmentFilm" >
+        <action
+            android:id="@+id/action_userFragmentFilm_to_userFragmentSession"
+            app:destination="@id/userFragmentSession" />
+    </fragment>
+    <fragment
+        android:id="@+id/userFragmentSession"
+        android:name="com.example.cinemabdapp.user.UserFragmentSession"
+        android:label="UserFragmentSession" >
+        <action
+            android:id="@+id/action_userFragmentSession_to_userFragmentTicket"
+            app:destination="@id/userFragmentTicket" />
+    </fragment>
+    <fragment
+        android:id="@+id/userFragmentLogin"
+        android:name="com.example.cinemabdapp.user.UserFragmentLogin"
+        android:label="UserFragmentLogin" >
+        <action
+            android:id="@+id/action_userFragmentLogin_to_userFragmentFilms"
+            app:destination="@id/userFragmentFilms" />
+    </fragment>
+    <fragment
+        android:id="@+id/adminFragmentLogin"
+        android:name="com.example.cinemabdapp.admin.AdminFragmentLogin"
+        android:label="AdminFragmentLogin" >
+        <action
+            android:id="@+id/action_adminFragmentLogin_to_adminFragmentFilms"
+            app:destination="@id/adminFragmentFilms" />
+    </fragment>
+    <fragment
+        android:id="@+id/adminFragmentFilms"
+        android:name="com.example.cinemabdapp.admin.AdminFragmentFilms"
+        android:label="AdminFragmentFilms" >
+        <action
+            android:id="@+id/action_adminFragmentFilms_to_adminFragmentFilm"
+            app:destination="@id/adminFragmentFilm" />
+    </fragment>
+    <fragment
+        android:id="@+id/adminFragmentFilm"
+        android:name="com.example.cinemabdapp.admin.AdminFragmentFilm"
+        android:label="AdminFragmentFilm" >
+        <action
+            android:id="@+id/action_adminFragmentFilm_to_adminFragmentSession"
+            app:destination="@id/adminFragmentSession" />
+    </fragment>
+    <fragment
+        android:id="@+id/adminFragmentSession"
+        android:name="com.example.cinemabdapp.admin.AdminFragmentSession"
+        android:label="AdminFragmentSession" >
+        <action
+            android:id="@+id/action_adminFragmentSession_to_adminFragmentTicket"
+            app:destination="@id/adminFragmentTicket" />
+    </fragment>
+    <fragment
+        android:id="@+id/adminFragmentTicket"
+        android:name="com.example.cinemabdapp.admin.AdminFragmentTicket"
+        android:label="AdminFragmentTicket" />
+    <fragment
+        android:id="@+id/userFragmentTicket"
+        android:name="com.example.cinemabdapp.user.UserFragmentTicket"
+        android:label="UserFragmentTicket" />
+
+</navigation>

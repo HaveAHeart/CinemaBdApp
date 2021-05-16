@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/verGLLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.05" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/verGLRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.95" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/horGLTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.0" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/horGLNameBot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.05" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/horGLTimeBot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.15" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/horGLHallBot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.25" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/horGLPriceBot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.35" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/horGLPlaceMid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.45" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/horGLPlaceLowerMid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/horGLSessionsBot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.9" />
+
+    <TextView
+        android:id="@+id/textName"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:text="Default name"
+        app:layout_constraintBottom_toTopOf="@+id/horGLNameBot"
+        app:layout_constraintEnd_toStartOf="@+id/verGLRight"
+        app:layout_constraintStart_toStartOf="@+id/verGLLeft"
+        app:layout_constraintTop_toTopOf="@+id/horGLTop" />
+
+    <EditText
+        android:id="@+id/textTime"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center_vertical"
+        android:hint="Session time: "
+        app:layout_constraintBottom_toTopOf="@+id/horGLTimeBot"
+        app:layout_constraintEnd_toStartOf="@+id/verGLRight"
+        app:layout_constraintStart_toStartOf="@+id/verGLLeft"
+        app:layout_constraintTop_toTopOf="@+id/horGLNameBot" />
+
+    <EditText
+        android:id="@+id/textHall"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center_vertical"
+        android:hint="Hall: "
+        app:layout_constraintBottom_toTopOf="@+id/horGLHallBot"
+        app:layout_constraintEnd_toStartOf="@+id/buttonCheckHall"
+        app:layout_constraintStart_toStartOf="@+id/verGLLeft"
+        app:layout_constraintTop_toTopOf="@+id/horGLTimeBot" />
+
+    <EditText
+        android:id="@+id/textPrice"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center_vertical"
+        android:hint="Price: "
+        app:layout_constraintBottom_toTopOf="@+id/horGLPriceBot"
+        app:layout_constraintEnd_toStartOf="@+id/verGLRight"
+        app:layout_constraintStart_toStartOf="@+id/verGLLeft"
+        app:layout_constraintTop_toTopOf="@+id/horGLHallBot" />
+
+    <TextView
+        android:id="@+id/textSessions"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center_vertical"
+        android:hint="Places: "
+        app:layout_constraintBottom_toTopOf="@+id/horGLPlaceLowerMid"
+        app:layout_constraintEnd_toStartOf="@+id/verGLRight"
+        app:layout_constraintStart_toStartOf="@+id/verGLLeft"
+        app:layout_constraintTop_toTopOf="@+id/horGLPlaceMid" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rowsList"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/horGLSessionsBot"
+        app:layout_constraintEnd_toStartOf="@+id/verGLRight"
+        app:layout_constraintStart_toStartOf="@+id/verGLLeft"
+        app:layout_constraintTop_toTopOf="@+id/horGLPlaceLowerMid" />
+
+    <Button
+        android:id="@+id/buttonPushSession"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="Update / Create"
+        app:layout_constraintBottom_toTopOf="@+id/horGLPlaceMid"
+        app:layout_constraintEnd_toStartOf="@+id/verGLRight"
+        app:layout_constraintStart_toStartOf="@+id/verGLLeft"
+        app:layout_constraintTop_toBottomOf="@+id/textPrice" />
+
+    <Button
+        android:id="@+id/buttonCheckHall"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="Check hall"
+        app:layout_constraintBottom_toTopOf="@+id/horGLHallBot"
+        app:layout_constraintEnd_toStartOf="@+id/verGLRight"
+        app:layout_constraintStart_toEndOf="@+id/textHall"
+        app:layout_constraintTop_toTopOf="@+id/horGLTimeBot" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
