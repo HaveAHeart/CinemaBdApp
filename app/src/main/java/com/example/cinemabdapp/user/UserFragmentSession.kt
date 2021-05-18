@@ -15,7 +15,8 @@ import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.toolbox.*
 import com.example.cinemabdapp.R
-import com.example.cinemabdapp.SharedPrefManager
+import com.example.cinemabdapp.UtilityClass
+import com.example.cinemabdapp.UtilityClass.Companion.GET_PLACES_BY_SESSIONID
 import kotlinx.android.synthetic.main.fragment_user_session.*
 
 
@@ -43,8 +44,8 @@ class UserFragmentSession: Fragment() {
             start()
         }
 
-        val spf: SharedPreferences = requireActivity().getSharedPreferences(SharedPrefManager.SPF_NAME, Context.MODE_PRIVATE)
-        val ipDB = spf.getString(SharedPrefManager.IP_NAME, null)
+        val spf: SharedPreferences = requireActivity().getSharedPreferences(UtilityClass.SPF_NAME, Context.MODE_PRIVATE)
+        val ipDB = spf.getString(UtilityClass.IP_NAME, null)
         val nav = Navigation.findNavController(requireView())
 
         id = arguments?.getString("id")
@@ -59,8 +60,13 @@ class UserFragmentSession: Fragment() {
         textPrice.text = price
 
         val request = JsonArrayRequest(
-            "http://$ipDB:3000/rpc/getplaces?inmsid=%s".format(id),
+            GET_PLACES_BY_SESSIONID.format(ipDB, id),
             Response.Listener { jsonArr ->
+
+                //forming a hashmap, where for every row as key there will be
+                // ArrayList of places as value, with null for places that are free
+
+
                 val rowsInfo = HashMap<Int, ArrayList<Int?>>()
                 for (i in 0 until jsonArr.length()) {
                     val jsonObj = jsonArr.getJSONObject(i)

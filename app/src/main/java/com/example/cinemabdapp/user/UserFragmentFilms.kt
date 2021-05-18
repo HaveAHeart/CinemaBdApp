@@ -15,7 +15,9 @@ import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.toolbox.*
 import com.example.cinemabdapp.R
-import com.example.cinemabdapp.SharedPrefManager
+import com.example.cinemabdapp.UtilityClass
+import com.example.cinemabdapp.UtilityClass.Companion.GET_NEAREST_FILMS
+import com.example.cinemabdapp.UtilityClass.Companion.SEARCH_MOVIES_BY_PATTERN
 import kotlinx.android.synthetic.main.fragment_user_films.*
 
 
@@ -37,12 +39,12 @@ class UserFragmentFilms: Fragment() {
             start()
         }
 
-        val spf: SharedPreferences = requireActivity().getSharedPreferences(SharedPrefManager.SPF_NAME, Context.MODE_PRIVATE)
-        val ipDB = spf.getString(SharedPrefManager.IP_NAME, null)
+        val spf: SharedPreferences = requireActivity().getSharedPreferences(UtilityClass.SPF_NAME, Context.MODE_PRIVATE)
+        val ipDB = spf.getString(UtilityClass.IP_NAME, null)
         val nav = Navigation.findNavController(requireView())
 
         val request = JsonArrayRequest(
-            "http://$ipDB:3000/rpc/getnearestfilms",
+            GET_NEAREST_FILMS.format(ipDB),
             Response.Listener { jsonArr ->
                 filmsList.layoutManager = LinearLayoutManager(activity)
                 filmsList.adapter = FilmsRecyclerAdapter(jsonArr, nav, R.id.userFragmentFilm)
@@ -60,7 +62,7 @@ class UserFragmentFilms: Fragment() {
 
         buttonFilmSearch.setOnClickListener {
             val requestSearch = JsonArrayRequest(
-                "http://$ipDB:3000/rpc/searchmovies?pattern=%s".format(editTextSearchFilm.text.toString()),
+                SEARCH_MOVIES_BY_PATTERN.format(ipDB, editTextSearchFilm.text.toString()),
                 Response.Listener { jsonArr ->
                     filmsList.layoutManager = LinearLayoutManager(activity)
                     filmsList.adapter = FilmsRecyclerAdapter(jsonArr, nav, R.id.userFragmentFilm)

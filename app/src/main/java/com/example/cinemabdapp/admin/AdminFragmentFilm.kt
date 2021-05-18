@@ -18,9 +18,13 @@ import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.toolbox.*
 import com.example.cinemabdapp.R
-import com.example.cinemabdapp.SharedPrefManager
+import com.example.cinemabdapp.UtilityClass
+import com.example.cinemabdapp.UtilityClass.Companion.GET_MOVIE_BY_ID
+import com.example.cinemabdapp.UtilityClass.Companion.GET_PERSONS_BY_MOVIEID
+import com.example.cinemabdapp.UtilityClass.Companion.GET_SESSIONS_BY_MOVIEID
+import com.example.cinemabdapp.UtilityClass.Companion.MOVIE_TABLE
+import com.example.cinemabdapp.UtilityClass.Companion.PATCH_MOVIE_BY_ID
 import kotlinx.android.synthetic.main.fragment_admin_film.*
-import kotlinx.android.synthetic.main.fragment_user_film.*
 import kotlinx.android.synthetic.main.fragment_user_film.personsList
 import kotlinx.android.synthetic.main.fragment_user_film.sessionsList
 import kotlinx.android.synthetic.main.fragment_user_film.textDate
@@ -29,6 +33,7 @@ import org.json.JSONArray
 
 class AdminFragmentFilm: Fragment() {
     var act: String? = null
+    var duration: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,8 +52,8 @@ class AdminFragmentFilm: Fragment() {
             start()
         }
 
-        val spf: SharedPreferences = requireActivity().getSharedPreferences(SharedPrefManager.SPF_NAME, Context.MODE_PRIVATE)
-        val ipDB = spf.getString(SharedPrefManager.IP_NAME, null)
+        val spf: SharedPreferences = requireActivity().getSharedPreferences(UtilityClass.SPF_NAME, Context.MODE_PRIVATE)
+        val ipDB = spf.getString(UtilityClass.IP_NAME, null)
         val nav = Navigation.findNavController(requireView())
         var movieName = ""
         val id = arguments?.getString("id")
@@ -56,12 +61,13 @@ class AdminFragmentFilm: Fragment() {
 
         if (act == "update") {
             val request = JsonArrayRequest(
-                "http://$ipDB:3000/movie?id=eq.%s".format(id),
+                GET_MOVIE_BY_ID.format(ipDB, id),
                 Response.Listener {
                     val movie = it.getJSONObject(0)
                     movieName = movie.getString("name")
                     textName.text = movie.getString("name")
                     textDate.text = movie.getString("releasedate")
+                    duration = movie.getString("duration")
                 },
                 Response.ErrorListener {
                     Toast.makeText(
@@ -74,7 +80,7 @@ class AdminFragmentFilm: Fragment() {
             queue.add(request)
 
             val requestRoles = JsonArrayRequest(
-                "http://$ipDB:3000/rpc/getpersons?mid=%s".format(id),
+                GET_PERSONS_BY_MOVIEID.format(ipDB, id),
                 Response.Listener<JSONArray> {
                     personsList.layoutManager = LinearLayoutManager(activity)
                     personsList.adapter = PersonsRecyclerAdapter(it, nav)
@@ -90,7 +96,7 @@ class AdminFragmentFilm: Fragment() {
             queue.add(requestRoles)
 
             val requestSessions = JsonArrayRequest(
-                "http://$ipDB:3000/rpc/getsessions?inmid=%s".format(id),
+                GET_SESSIONS_BY_MOVIEID.format(ipDB, id),
                 Response.Listener<JSONArray> {
                     sessionsList.layoutManager = LinearLayoutManager(activity)
                     sessionsList.adapter =
@@ -110,7 +116,7 @@ class AdminFragmentFilm: Fragment() {
 
         buttonPush.setOnClickListener {
             val reqType = if (act == "update") PATCH else POST
-            val url = if (act == "update") "http://$ipDB:3000/movie?id=eq.%s".format(id) else "http://$ipDB:3000/movie"
+            val url = if (act == "update") PATCH_MOVIE_BY_ID.format(ipDB, id) else MOVIE_TABLE.format(ipDB)
             val request = object : StringRequest(
                 reqType,
                 url,
@@ -124,11 +130,11 @@ class AdminFragmentFilm: Fragment() {
             ) {
                 override fun getParams(): Map<String, String>? {
                     val params: MutableMap<String, String> = HashMap()
-                    //if (act == "update") params["id"] = id.toString()
+                    //if (act == "update") params["id"] = id.toString() - PATCH works even without ID
 
                     params["name"] = textName.text.toString()
                     params["releasedate"] = textDate.text.toString()
-                    params["duration"] = "01:30:00"
+                    params["duration"] = duration!!
                     return params
                 }
             }

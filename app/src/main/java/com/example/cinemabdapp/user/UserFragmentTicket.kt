@@ -14,7 +14,8 @@ import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.toolbox.*
 import com.example.cinemabdapp.R
-import com.example.cinemabdapp.SharedPrefManager
+import com.example.cinemabdapp.UtilityClass
+import com.example.cinemabdapp.UtilityClass.Companion.BUY_TICKET
 import kotlinx.android.synthetic.main.fragment_user_ticket.*
 import org.json.JSONArray
 
@@ -38,8 +39,8 @@ class UserFragmentTicket: Fragment() {
             start()
         }
 
-        val spf: SharedPreferences = requireActivity().getSharedPreferences(SharedPrefManager.SPF_NAME, Context.MODE_PRIVATE)
-        val ipDB = spf.getString(SharedPrefManager.IP_NAME, null)
+        val spf: SharedPreferences = requireActivity().getSharedPreferences(UtilityClass.SPF_NAME, Context.MODE_PRIVATE)
+        val ipDB = spf.getString(UtilityClass.IP_NAME, null)
         val nav = Navigation.findNavController(requireView())
 
         val id = arguments?.getString("id")
@@ -51,7 +52,7 @@ class UserFragmentTicket: Fragment() {
 
         val request = object : StringRequest(
             POST,
-            "http://$ipDB:3000/rpc/buyticket",
+            BUY_TICKET.format(ipDB),
             Response.Listener<String> {
                 Toast.makeText(context, "yay, ticket bought!", Toast.LENGTH_LONG).show()
                 textID.text = JSONArray(it).getJSONObject(0).getInt("retid").toString()

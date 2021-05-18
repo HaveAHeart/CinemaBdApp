@@ -12,7 +12,8 @@ import com.android.volley.Response
 import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.Volley
 import com.example.cinemabdapp.R
-import com.example.cinemabdapp.SharedPrefManager
+import com.example.cinemabdapp.UtilityClass
+import com.example.cinemabdapp.UtilityClass.Companion.CHECK_CONNECTION
 import kotlinx.android.synthetic.main.fragment_admin_login.*
 
 class AdminFragmentLogin: Fragment() {
@@ -27,18 +28,18 @@ class AdminFragmentLogin: Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val spf = requireActivity().getSharedPreferences(SharedPrefManager.SPF_NAME, Context.MODE_PRIVATE)
-        editTextIP.setText(spf.getString(SharedPrefManager.IP_NAME, null))
+        val spf = requireActivity().getSharedPreferences(UtilityClass.SPF_NAME, Context.MODE_PRIVATE)
+        editTextIP.setText(spf.getString(UtilityClass.IP_NAME, null))
 
         buttonAdminLogging.setOnClickListener {
             val inputIP = editTextIP.text.toString()
             val queue = Volley.newRequestQueue(requireActivity())
 
             val request = JsonArrayRequest(
-                "http://$inputIP:3000/movie?limit=1",
+                CHECK_CONNECTION.format(inputIP),
                 Response.Listener {
                     val ed = spf.edit()
-                    ed.putString(SharedPrefManager.IP_NAME, inputIP)
+                    ed.putString(UtilityClass.IP_NAME, inputIP)
                     ed.apply()
 
                     Navigation.findNavController(requireView()).navigate(R.id.adminFragmentFilms)

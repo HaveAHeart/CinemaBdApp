@@ -16,9 +16,10 @@ import com.android.volley.Response
 import com.android.volley.toolbox.*
 import com.android.volley.toolbox.Volley.newRequestQueue
 import com.example.cinemabdapp.R
-import com.example.cinemabdapp.SharedPrefManager
+import com.example.cinemabdapp.UtilityClass
+import com.example.cinemabdapp.UtilityClass.Companion.GET_NEAREST_FILMS
+import com.example.cinemabdapp.UtilityClass.Companion.SEARCH_MOVIES_BY_PATTERN
 import kotlinx.android.synthetic.main.fragment_admin_films.*
-import kotlinx.android.synthetic.main.fragment_user_films.*
 import kotlinx.android.synthetic.main.fragment_user_films.buttonFilmSearch
 import kotlinx.android.synthetic.main.fragment_user_films.editTextSearchFilm
 import kotlinx.android.synthetic.main.fragment_user_films.filmsList
@@ -42,13 +43,15 @@ class AdminFragmentFilms: Fragment() {
         val queue: RequestQueue = RequestQueue(cache, network).apply{
             start()
         }
+        //val queue = newRequestQueue(context)
 
-        val spf: SharedPreferences = requireActivity().getSharedPreferences(SharedPrefManager.SPF_NAME, Context.MODE_PRIVATE)
-        val ipDB = spf.getString(SharedPrefManager.IP_NAME, null)
+
+        val spf: SharedPreferences = requireActivity().getSharedPreferences(UtilityClass.SPF_NAME, Context.MODE_PRIVATE)
+        val ipDB = spf.getString(UtilityClass.IP_NAME, null)
         val nav = Navigation.findNavController(requireView())
         val t = System.nanoTime()
         val request = JsonArrayRequest(
-            "http://$ipDB:3000/rpc/getnearestfilms",
+            GET_NEAREST_FILMS.format(ipDB),
             Response.Listener { jsonArr ->
                 Toast.makeText(context, (System.nanoTime() - t).toString(), Toast.LENGTH_LONG).show()
                 filmsList.layoutManager = LinearLayoutManager(activity)
@@ -67,7 +70,7 @@ class AdminFragmentFilms: Fragment() {
 
         buttonFilmSearch.setOnClickListener {
             val requestSearch = JsonArrayRequest(
-                "http://$ipDB:3000/rpc/searchmovies?pattern=%s".format(editTextSearchFilm.text.toString()),
+                SEARCH_MOVIES_BY_PATTERN.format(editTextSearchFilm.text.toString()),
                 Response.Listener { jsonArr ->
                     filmsList.layoutManager = LinearLayoutManager(activity)
                     filmsList.adapter = FilmsRecyclerAdapter(jsonArr, nav, R.id.adminFragmentFilm)

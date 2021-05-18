@@ -14,7 +14,8 @@ import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.toolbox.*
 import com.example.cinemabdapp.R
-import com.example.cinemabdapp.SharedPrefManager
+import com.example.cinemabdapp.UtilityClass
+import com.example.cinemabdapp.UtilityClass.Companion.DELETE_TICKET
 import kotlinx.android.synthetic.main.fragment_admin_ticket.*
 
 
@@ -37,8 +38,8 @@ class AdminFragmentTicket: Fragment() {
             start()
         }
 
-        val spf: SharedPreferences = requireActivity().getSharedPreferences(SharedPrefManager.SPF_NAME, Context.MODE_PRIVATE)
-        val ipDB = spf.getString(SharedPrefManager.IP_NAME, null)
+        val spf: SharedPreferences = requireActivity().getSharedPreferences(UtilityClass.SPF_NAME, Context.MODE_PRIVATE)
+        val ipDB = spf.getString(UtilityClass.IP_NAME, null)
         val nav = Navigation.findNavController(requireView())
 
         val id = arguments?.getString("id")
@@ -60,7 +61,7 @@ class AdminFragmentTicket: Fragment() {
             buttonDeleteTicket.setOnClickListener {
                 val request = object : StringRequest(
                     POST,
-                    "http:$ipDB:3000/rpc/deleteticket".format(id),
+                    DELETE_TICKET.format(ipDB, id),
                     Response.Listener<String> {
                         Toast.makeText(context, "yay, ticket removed!", Toast.LENGTH_LONG).show()
                         nav.popBackStack()
@@ -78,7 +79,7 @@ class AdminFragmentTicket: Fragment() {
 
                         params["inmsid"] = id!!
                         params["rw"] = row!!
-                        params["st"] = seat!!
+                        params["st"] = seat
                         return params
                     }
                 }

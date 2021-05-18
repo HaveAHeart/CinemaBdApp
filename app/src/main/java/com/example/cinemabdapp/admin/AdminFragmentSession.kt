@@ -10,15 +10,17 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.android.volley.Request
 import com.android.volley.Request.Method.*
 import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.toolbox.*
 import com.example.cinemabdapp.R
-import com.example.cinemabdapp.SharedPrefManager
+import com.example.cinemabdapp.UtilityClass
+import com.example.cinemabdapp.UtilityClass.Companion.GET_HALLID_BY_HALLNAME
+import com.example.cinemabdapp.UtilityClass.Companion.GET_PLACES_BY_SESSIONID
+import com.example.cinemabdapp.UtilityClass.Companion.MOVIESESSION_TABLE
+import com.example.cinemabdapp.UtilityClass.Companion.PATCH_MOVIESESSION_BY_ID
 import com.example.cinemabdapp.adapters.RowRecyclerAdapter
-import kotlinx.android.synthetic.main.fragment_admin_film.buttonPush
 import kotlinx.android.synthetic.main.fragment_admin_session.*
 import kotlinx.android.synthetic.main.fragment_user_session.rowsList
 import kotlinx.android.synthetic.main.fragment_user_session.textHall
@@ -26,8 +28,6 @@ import kotlinx.android.synthetic.main.fragment_user_session.textName
 import kotlinx.android.synthetic.main.fragment_user_session.textPrice
 import kotlinx.android.synthetic.main.fragment_user_session.textTime
 import org.json.JSONArray
-import org.json.JSONObject
-import org.json.JSONStringer
 
 
 class AdminFragmentSession: Fragment() {
@@ -57,11 +57,9 @@ class AdminFragmentSession: Fragment() {
             start()
         }
 
-        val spf: SharedPreferences = requireActivity().getSharedPreferences(SharedPrefManager.SPF_NAME, Context.MODE_PRIVATE)
-        val ipDB = spf.getString(SharedPrefManager.IP_NAME, null)
+        val spf: SharedPreferences = requireActivity().getSharedPreferences(UtilityClass.SPF_NAME, Context.MODE_PRIVATE)
+        val ipDB = spf.getString(UtilityClass.IP_NAME, null)
         val nav = Navigation.findNavController(requireView())
-
-
 
         id = arguments?.getString("id")
         name = arguments?.getString("name")
@@ -70,6 +68,7 @@ class AdminFragmentSession: Fragment() {
         price = arguments?.getString("price")!!.split(" ")[0]
         act = arguments?.getString("action") ?: "update"
         movieId = arguments?.getString("mid")
+
         textName.text = name
         textTime.text = time
         textHall.text = hall
@@ -77,9 +76,13 @@ class AdminFragmentSession: Fragment() {
 
         if (act == "update") {
             val request = JsonArrayRequest(
-                "http://$ipDB:3000/rpc/getplaces?inmsid=%s".format(id),
+                GET_PLACES_BY_SESSIONID.format(ipDB, id),
                 Response.Listener { jsonArr ->
                     val rowsInfo = HashMap<Int, ArrayList<Int?>>()
+
+                    //forming a hashmap, where for every row as key there will be
+                    // ArrayList of places as value, with null for places that are free
+
                     for (i in 0 until jsonArr.length()) {
                         val jsonObj = jsonArr.getJSONObject(i)
                         val row = jsonObj.getInt("rw")
@@ -114,7 +117,7 @@ class AdminFragmentSession: Fragment() {
         buttonCheckHall.setOnClickListener {
             val reqHall = StringRequest(
                 GET,
-                "http://$ipDB:3000/hall?select=id&hallname=eq.%s".format(textHall.text.toString()),
+                GET_HALLID_BY_HALLNAME.format(ipDB, textHall.text.toString()),
                 Response.Listener {
                     //Toast.makeText(context, "$it\n${JSONArray(it).getJSONObject(0)}\n${JSONArray(it).getJSONObject(0).getString("id")}", Toast.LENGTH_LONG).show()
                     hallId = JSONArray(it).getJSONObject(0).getString("id")
@@ -129,7 +132,7 @@ class AdminFragmentSession: Fragment() {
 
         buttonPushSession.setOnClickListener {
             val reqType = if (act == "update") PATCH else POST
-            val url = if (act == "update") "http://$ipDB:3000/moviesession?id=eq.%s".format(id) else "http://$ipDB:3000/moviesession"
+            val url = if (act == "update") PATCH_MOVIESESSION_BY_ID.format(id) else MOVIESESSION_TABLE.format(ipDB)
             val request = object : StringRequest(
                 reqType,
                 url,
@@ -155,6 +158,5 @@ class AdminFragmentSession: Fragment() {
 
             queue.add(request)
         }
-
     }
 }
