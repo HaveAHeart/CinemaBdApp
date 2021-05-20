@@ -16,16 +16,16 @@ class FilmsRecyclerAdapter(private val films: JSONArray, private val nav: NavCon
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var filmName: TextView? = null
         var filmDate: TextView? = null
-        var filmID: TextView? = null
+        var filmID: String? = null
 
         init {
             filmName = itemView.findViewById(R.id.itemFilmName)
             filmDate = itemView.findViewById(R.id.itemFilmDate)
-            filmID = itemView.findViewById(R.id.itemFilmID)
+            filmID = ""
 
             itemView.setOnClickListener {
                 val bundle = Bundle()
-                bundle.putString("id", filmID?.text.toString())
+                bundle.putString("id", filmID)
 
                 nav.navigate(navTo, bundle)
             }
@@ -46,7 +46,7 @@ class FilmsRecyclerAdapter(private val films: JSONArray, private val nav: NavCon
         val time = dateTime[1].split(":")
         holder.filmName?.text = film.getString("n")
         holder.filmDate?.text = "${dateTime[0]} at ${time[0]}:${time[1]}"
-        holder.filmID?.text = film.getString("id")
+        holder.filmID = film.getString("id")
     }
 
     override fun getItemCount(): Int {

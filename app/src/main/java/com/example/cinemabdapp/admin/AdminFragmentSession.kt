@@ -10,7 +10,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.android.volley.Request.Method.*
+import com.android.volley.Request.Method.GET
+import com.android.volley.Request.Method.POST
 import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.toolbox.*
@@ -18,8 +19,7 @@ import com.example.cinemabdapp.R
 import com.example.cinemabdapp.UtilityClass
 import com.example.cinemabdapp.UtilityClass.Companion.GET_HALLID_BY_HALLNAME
 import com.example.cinemabdapp.UtilityClass.Companion.GET_PLACES_BY_SESSIONID
-import com.example.cinemabdapp.UtilityClass.Companion.MOVIESESSION_TABLE
-import com.example.cinemabdapp.UtilityClass.Companion.PATCH_MOVIESESSION_BY_ID
+import com.example.cinemabdapp.UtilityClass.Companion.getErrorMsg
 import com.example.cinemabdapp.adapters.RowRecyclerAdapter
 import kotlinx.android.synthetic.main.fragment_admin_session.*
 import kotlinx.android.synthetic.main.fragment_user_session.rowsList
@@ -106,7 +106,7 @@ class AdminFragmentSession: Fragment() {
                 Response.ErrorListener {
                     Toast.makeText(
                         requireActivity(),
-                        "There is no such session. Try again with another one.",
+                        getErrorMsg(it),
                         Toast.LENGTH_LONG
                     ).show()
                 }
@@ -119,11 +119,10 @@ class AdminFragmentSession: Fragment() {
                 GET,
                 GET_HALLID_BY_HALLNAME.format(ipDB, textHall.text.toString()),
                 Response.Listener {
-                    //Toast.makeText(context, "$it\n${JSONArray(it).getJSONObject(0)}\n${JSONArray(it).getJSONObject(0).getString("id")}", Toast.LENGTH_LONG).show()
                     hallId = JSONArray(it).getJSONObject(0).getString("id")
                 },
                 Response.ErrorListener {
-                    Toast.makeText(context, "unable to get hallid", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, getErrorMsg(it), Toast.LENGTH_LONG).show()
                 }
             )
 
@@ -131,27 +130,30 @@ class AdminFragmentSession: Fragment() {
         }
 
         buttonPushSession.setOnClickListener {
-            val reqType = if (act == "update") PATCH else POST
-            val url = if (act == "update") PATCH_MOVIESESSION_BY_ID.format(id) else MOVIESESSION_TABLE.format(ipDB)
-            val request = object : StringRequest(
-                reqType,
-                url,
-                Response.Listener {
-                    Toast.makeText(context, "yay, moviesession updated!", Toast.LENGTH_LONG).show()
+            time = textTime.text.toString()
+            price = textPrice.text.toString()
 
+            val request = object : StringRequest(
+                POST,
+                UtilityClass.PUSH_SESSION.format(ipDB),
+                Response.Listener<String> {
+                    Toast.makeText(context, "yay, session updated!", Toast.LENGTH_LONG).show()
+
+                    time = textTime.text.toString()
+                    price = textPrice.text.toString()
                 },
                 Response.ErrorListener {
-                    it.printStackTrace()
-                    Toast.makeText(context, "This time is already occupied.", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, getErrorMsg(it), Toast.LENGTH_LONG).show()
                 }
             ) {
                 override fun getParams(): Map<String, String>? {
                     val params: MutableMap<String, String> = HashMap()
-                    //if (act == "update") params["id"] = id.toString()
 
-                    params["hallid"] = hallId!!.toString()
-                    params["sessiontime"] = textTime.text.toString()
-                    params["sessionprice"] = textPrice.text.toString()
+                    params["inid"] = id!!
+                    params["inmid"] = movieId!!
+                    params["hid"] = hallId!!
+                    params["st"] = time!!
+                    params["sp"] = price!!
                     return params
                 }
             }

@@ -9,11 +9,12 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.android.volley.Response
-import com.android.volley.toolbox.JsonArrayRequest
+import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.cinemabdapp.R
 import com.example.cinemabdapp.UtilityClass
 import com.example.cinemabdapp.UtilityClass.Companion.CHECK_CONNECTION
+import com.example.cinemabdapp.UtilityClass.Companion.getErrorMsg
 import kotlinx.android.synthetic.main.fragment_user_login.*
 
 class UserFragmentLogin: Fragment() {
@@ -34,7 +35,7 @@ class UserFragmentLogin: Fragment() {
             val inputIP = editTextIP.text.toString()
             val queue = Volley.newRequestQueue(requireActivity())
 
-            val request = JsonArrayRequest(
+            val request = StringRequest(
                 CHECK_CONNECTION.format(inputIP),
                 Response.Listener {
                     val ed = spf.edit()
@@ -46,7 +47,7 @@ class UserFragmentLogin: Fragment() {
                 Response.ErrorListener {
                     Toast.makeText(
                         requireActivity(),
-                        "There is no such database at the IP. Try again with another one.",
+                        getErrorMsg(it),
                         Toast.LENGTH_LONG
                     ).show()
                 })

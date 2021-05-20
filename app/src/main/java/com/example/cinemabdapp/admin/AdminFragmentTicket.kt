@@ -16,6 +16,7 @@ import com.android.volley.toolbox.*
 import com.example.cinemabdapp.R
 import com.example.cinemabdapp.UtilityClass
 import com.example.cinemabdapp.UtilityClass.Companion.DELETE_TICKET
+import com.example.cinemabdapp.UtilityClass.Companion.getErrorMsg
 import kotlinx.android.synthetic.main.fragment_admin_ticket.*
 
 
@@ -69,7 +70,7 @@ class AdminFragmentTicket: Fragment() {
                     Response.ErrorListener {
                         Toast.makeText(
                             context,
-                            "Experienced the troubles with removing the ticket.",
+                            getErrorMsg(it),
                             Toast.LENGTH_LONG
                         ).show()
                     }

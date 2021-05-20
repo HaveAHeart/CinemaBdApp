@@ -18,6 +18,7 @@ import com.example.cinemabdapp.R
 import com.example.cinemabdapp.UtilityClass
 import com.example.cinemabdapp.UtilityClass.Companion.GET_NEAREST_FILMS
 import com.example.cinemabdapp.UtilityClass.Companion.SEARCH_MOVIES_BY_PATTERN
+import com.example.cinemabdapp.UtilityClass.Companion.getErrorMsg
 import kotlinx.android.synthetic.main.fragment_user_films.*
 
 
@@ -53,7 +54,7 @@ class UserFragmentFilms: Fragment() {
             Response.ErrorListener {
                 Toast.makeText(
                     requireActivity(),
-                    "There is no such database an the IP. Try again with another one.",
+                    getErrorMsg(it),
                     Toast.LENGTH_LONG
                 ).show()
             }
@@ -71,7 +72,7 @@ class UserFragmentFilms: Fragment() {
                 Response.ErrorListener {
                     Toast.makeText(
                         requireActivity(),
-                        "Search failed. Try again with another one.",
+                        getErrorMsg(it),
                         Toast.LENGTH_LONG
                     ).show()
                 }

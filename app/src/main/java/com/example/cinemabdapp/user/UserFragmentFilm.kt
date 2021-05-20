@@ -20,6 +20,7 @@ import com.example.cinemabdapp.UtilityClass
 import com.example.cinemabdapp.UtilityClass.Companion.GET_MOVIE_BY_ID
 import com.example.cinemabdapp.UtilityClass.Companion.GET_PERSONS_BY_MOVIEID
 import com.example.cinemabdapp.UtilityClass.Companion.GET_SESSIONS_BY_MOVIEID
+import com.example.cinemabdapp.UtilityClass.Companion.getErrorMsg
 import kotlinx.android.synthetic.main.fragment_user_film.*
 import org.json.JSONArray
 
@@ -59,7 +60,7 @@ class UserFragmentFilm: Fragment() {
             Response.ErrorListener {
                 Toast.makeText(
                     requireActivity(),
-                    "There is no movie with such ID.",
+                    getErrorMsg(it),
                     Toast.LENGTH_LONG
                 ).show()
             }
@@ -70,9 +71,9 @@ class UserFragmentFilm: Fragment() {
             GET_PERSONS_BY_MOVIEID.format(ipDB, id),
             Response.Listener<JSONArray> {
                 personsList.layoutManager = LinearLayoutManager(activity)
-                personsList.adapter = PersonsRecyclerAdapter(it, nav)
+                personsList.adapter = PersonsRecyclerAdapter(it, nav, id!!, 0)
             },
-            Response.ErrorListener { Toast.makeText(requireContext(), "Error while loading persons", Toast.LENGTH_LONG).show() }
+            Response.ErrorListener { Toast.makeText(requireContext(), getErrorMsg(it), Toast.LENGTH_LONG).show() }
         )
         queue.add(requestRoles)
 
@@ -82,7 +83,7 @@ class UserFragmentFilm: Fragment() {
                 sessionsList.layoutManager = LinearLayoutManager(activity)
                 sessionsList.adapter = SessionsRecyclerAdapter(it, nav, movieName, R.id.userFragmentSession)
             },
-            Response.ErrorListener { Toast.makeText(requireContext(), "Error while loading sessions", Toast.LENGTH_LONG).show() }
+            Response.ErrorListener { Toast.makeText(requireContext(), getErrorMsg(it), Toast.LENGTH_LONG).show() }
         )
         queue.add(requestSessions)
 

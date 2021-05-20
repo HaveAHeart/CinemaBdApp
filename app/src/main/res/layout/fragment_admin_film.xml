@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -48,11 +47,18 @@
         app:layout_constraintGuide_percent="0.2" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/horGLPersonMid"
+        android:id="@+id/horGLPersonDurBot"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.3" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/horGLPersonMid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.4" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/horGLPersonBot"
@@ -97,6 +103,17 @@
         app:layout_constraintStart_toStartOf="@+id/verGLLeft"
         app:layout_constraintTop_toTopOf="@+id/horGLNameBot" />
 
+    <EditText
+        android:id="@+id/textDur"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center_vertical"
+        android:hint="Duration: 00:00:00"
+        app:layout_constraintBottom_toTopOf="@+id/horGLPersonDurBot"
+        app:layout_constraintEnd_toStartOf="@+id/verGLRight"
+        app:layout_constraintStart_toStartOf="@+id/verGLLeft"
+        app:layout_constraintTop_toTopOf="@+id/horGLDateBot" />
+
     <TextView
         android:id="@+id/textHall"
         android:layout_width="0dp"
@@ -106,7 +123,7 @@
         app:layout_constraintBottom_toTopOf="@+id/horGLPersonMid"
         app:layout_constraintEnd_toStartOf="@+id/verGLMid"
         app:layout_constraintStart_toStartOf="@+id/verGLLeft"
-        app:layout_constraintTop_toTopOf="@+id/horGLDateBot" />
+        app:layout_constraintTop_toTopOf="@+id/horGLPersonDurBot" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/personsList"
@@ -146,6 +163,16 @@
         app:layout_constraintEnd_toStartOf="@+id/verGLRight"
         app:layout_constraintStart_toStartOf="@+id/verGLMid"
         app:layout_constraintTop_toTopOf="@+id/horGLPersonBot" />
+
+    <Button
+        android:id="@+id/buttonAddPerson"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="Add"
+        app:layout_constraintBottom_toTopOf="@+id/horGLPersonMid"
+        app:layout_constraintEnd_toStartOf="@+id/verGLRight"
+        app:layout_constraintStart_toStartOf="@+id/verGLMid"
+        app:layout_constraintTop_toTopOf="@+id/horGLPersonDurBot" />
 
     <Button
         android:id="@+id/buttonPush"

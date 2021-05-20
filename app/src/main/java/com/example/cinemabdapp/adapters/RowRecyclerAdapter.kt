@@ -32,7 +32,6 @@ class RowRecyclerAdapter(private val rowsInfo: HashMap<Int, ArrayList<Int?>>, pr
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val i = rowsInfo.keys.sorted()[position]
-        //Toast.makeText(holder.placeRW?.context, rowsInfo[i].toString() + " for " + rowsInfo.toString(), Toast.LENGTH_SHORT).show()
         holder.placeRW!!.layoutManager = holder.layoutManager
         holder.placeRW!!.adapter = SeatRecyclerAdapter(rowsInfo[i]!!, nav, i, price, hall, time, name, id, movTo)
     }

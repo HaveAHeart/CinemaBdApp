@@ -23,7 +23,6 @@ class SeatRecyclerAdapter(private val row: java.util.ArrayList<Int?>, private va
 
             itemView.setOnClickListener {
                 val bundle = Bundle()
-                //Toast.makeText(context, "$pos", Toast.LENGTH_LONG).show()
                 bundle.putString("seat", pos.toString())
                 bundle.putString("row", rowNum.toString())
                 bundle.putString("price", price)
@@ -46,7 +45,6 @@ class SeatRecyclerAdapter(private val row: java.util.ArrayList<Int?>, private va
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        //Toast.makeText(holder.placeCircle?.context, row.toString() + " at " + position.toString(), Toast.LENGTH_SHORT).show()
         holder.pos = position
         if (row[position] != null) {
             holder.isTaken = true

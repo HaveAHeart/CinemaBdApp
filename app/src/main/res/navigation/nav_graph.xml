@@ -33,6 +33,9 @@
         <action
             android:id="@+id/action_userFragmentFilm_to_userFragmentSession"
             app:destination="@id/userFragmentSession" />
+        <action
+            android:id="@+id/action_userFragmentFilm_to_adminFragmentPerson"
+            app:destination="@id/adminFragmentPerson" />
     </fragment>
     <fragment
         android:id="@+id/userFragmentSession"
@@ -90,5 +93,13 @@
         android:id="@+id/userFragmentTicket"
         android:name="com.example.cinemabdapp.user.UserFragmentTicket"
         android:label="UserFragmentTicket" />
+    <fragment
+        android:id="@+id/adminFragmentPerson"
+        android:name="com.example.cinemabdapp.admin.AdminFragmentPerson"
+        android:label="AdminFragmentPerson" >
+        <action
+            android:id="@+id/action_adminFragmentPerson_to_userFragmentFilm"
+            app:destination="@id/userFragmentFilm" />
+    </fragment>
 
 </navigation>

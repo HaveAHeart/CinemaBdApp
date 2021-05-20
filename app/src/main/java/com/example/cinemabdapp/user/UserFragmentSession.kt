@@ -17,6 +17,7 @@ import com.android.volley.toolbox.*
 import com.example.cinemabdapp.R
 import com.example.cinemabdapp.UtilityClass
 import com.example.cinemabdapp.UtilityClass.Companion.GET_PLACES_BY_SESSIONID
+import com.example.cinemabdapp.UtilityClass.Companion.getErrorMsg
 import kotlinx.android.synthetic.main.fragment_user_session.*
 
 
@@ -91,7 +92,7 @@ class UserFragmentSession: Fragment() {
             Response.ErrorListener {
                 Toast.makeText(
                     requireActivity(),
-                    "There is no such session. Try again with another one.",
+                    getErrorMsg(it),
                     Toast.LENGTH_LONG
                 ).show()
             }

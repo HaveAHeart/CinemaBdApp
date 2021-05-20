@@ -91,7 +91,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:gravity="center_vertical"
-        android:hint="Session time: "
+        android:hint="Session time: 1970-01-01 00:00:00"
         app:layout_constraintBottom_toTopOf="@+id/horGLTimeBot"
         app:layout_constraintEnd_toStartOf="@+id/verGLRight"
         app:layout_constraintStart_toStartOf="@+id/verGLLeft"
